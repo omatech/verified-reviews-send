@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="VERIFIED_REVIEWS_SERVICE_URL" value="https://www.opiniones-verificadas.com"/>
+        <env name="VERIFIED_REVIEWS_WEBSITE_ID" value="xxxx"/>
+        <env name="VERIFIED_REVIEWS_SECRET_KEY" value="xxxx"/>
+        <env name="VERIFIED_REVIEWS_TEST_EMAIL" value="xxx"/>
+        <env name="VERIFIED_REVIEWS_TEST_FIRSTNAME" value="firstname"/>
+        <env name="VERIFIED_REVIEWS_TEST_LAST_NAME" value="lastname"/>
+        <env name="VERIFIED_REVIEWS_TEST_ORDERREF" value="000001"/>
+        <env name="VERIFIED_REVIEWS_TEST_ORDER_DATE" value="2020-11-22 09:01:02"/>
+    </php>
+</phpunit>
