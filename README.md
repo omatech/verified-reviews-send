@@ -3,26 +3,10 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/omatech/verified-reviews-send.svg?style=flat-square)](https://packagist.org/packages/omatech/verified-reviews-send)
 [![Total Downloads](https://img.shields.io/packagist/dt/omatech/verified-reviews-send.svg?style=flat-square)](https://packagist.org/packages/omatech/verified-reviews-send)
 
-Use of Verified Reviews Send:
 
-``` php
-// Init the connection with verified reviews
-$verifiedReviewService = new VerifiedReviewsService(
-  $_ENV['VERIFIED_REVIEWS_SERVICE_URL']
-  , $_ENV['VERIFIED_REVIEWS_WEBSITE_ID']
-  , $_ENV['VERIFIED_REVIEWS_SECRET_KEY']);
+The aim of this package is to ease the sending of purchases made by your customers to verified opinions.
 
-// Send a new purchase
-$ret=$verifiedReviewService->send(
-  $_ENV['VERIFIED_REVIEWS_TEST_ORDERREF']
-, $_ENV['VERIFIED_REVIEWS_TEST_FIRSTNAME']
-, $_ENV['VERIFIED_REVIEWS_TEST_LAST_NAME']
-, $_ENV['VERIFIED_REVIEWS_TEST_EMAIL']
-, $_ENV['VERIFIED_REVIEWS_TEST_ORDER_DATE']
-);
-
-```
-
+Simply setup the connection and start sending requests to verified opinions.
 
 ## Installation
 
@@ -39,21 +23,33 @@ Recomended:
 VERIFIED_REVIEWS_SERVICE_URL=https://www.opiniones-verificadas.com
 VERIFIED_REVIEWS_WEBSITE_ID=xxxx
 VERIFIED_REVIEWS_SECRET_KEY=xxxx
-VERIFIED_REVIEWS_TEST_EMAILxxx
-VERIFIED_REVIEWS_TEST_FIRSTNAME=firstname
-VERIFIED_REVIEWS_TEST_LAST_NAME=lastname
-VERIFIED_REVIEWS_TEST_ORDERREF=000001
-VERIFIED_REVIEWS_TEST_ORDER_DATE=2020-11-22 09:01:02
 ```
 
 ## Usage
 
-XXX:
-
 ``` php
+// Init the connection with verified reviews
+$verifiedReviewService = new VerifiedReviewsService(
+  $_ENV['VERIFIED_REVIEWS_SERVICE_URL']
+  , $_ENV['VERIFIED_REVIEWS_WEBSITE_ID']
+  , $_ENV['VERIFIED_REVIEWS_SECRET_KEY']);
 
+$delay=0; // the delay in days you want to wait before verified opinions send the mail to the user
+foreach ($orders as $order) 
+{
+  // Send a new purchase
+  $ret=$verifiedReviewService->send(
+    $order->order_ref // your order reference number
+  , $order->firstname
+  , $order->lastname
+  , $order->email
+  , $order->orderdate //yyyy-mm-dd hh24:mi:ss
+  , $delay // optional parameter, default 0 
+  );
+}
 
 ```
+
 
 ### Testing
 
