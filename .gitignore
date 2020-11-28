@@ -6,3 +6,4 @@ vendor
 phpunit.xml
 .env
 phpunit.xml
+.phpunit.result.cache

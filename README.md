@@ -59,7 +59,11 @@ foreach ($orders as $order)
 composer test
 ```
 
-Note: Change the test execution to vendor/bin/phpunit if you are not in Windows
+Note: if you are in windows you can use:
+
+``` bash
+composer testwindows
+```
 
 ### Changelog
 
