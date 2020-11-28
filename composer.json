@@ -33,7 +33,8 @@
         }
     },
     "scripts": {
-        "test": "vendor\\bin\\phpunit.bat"
+        "testwindows": "vendor\\bin\\phpunit.bat"
+        , "test": "vendor\\bin\\phpunit"
     },
     "config": {
         "sort-packages": true
