@@ -35,6 +35,7 @@ $verifiedReviewService = new VerifiedReviewsService(
   , $_ENV['VERIFIED_REVIEWS_SECRET_KEY']);
 
 $delay=0; // the delay in days you want to wait before verified opinions send the mail to the user
+$really_send=true; // if you want to test the service set this flag to false and no requests will be send
 foreach ($orders as $order) 
 {
   // Send a new purchase
@@ -44,7 +45,8 @@ foreach ($orders as $order)
   , $order->lastname
   , $order->email
   , $order->orderdate //yyyy-mm-dd hh24:mi:ss
-  , $delay // optional parameter, default 0 
+  , $delay // optional parameter, default 0
+  , $really_send // optional parameter, default true 
   );
 }
 
