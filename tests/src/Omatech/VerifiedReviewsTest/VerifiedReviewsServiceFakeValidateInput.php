@@ -1,6 +1,7 @@
 <?php
 
-namespace Omatech\VerifiedReviews;
+namespace Omatech\VerifiedReviewsTest;
+use Omatech\VerifiedReviews\VerifiedReviewsServiceInterface;
 
 class VerifiedReviewsServiceFakeValidateInput implements VerifiedReviewsServiceInterface
 {
@@ -19,7 +20,7 @@ class VerifiedReviewsServiceFakeValidateInput implements VerifiedReviewsServiceI
     $this->secret_key=$secret_key;
   }
 
-  function send($order_ref, $firstname, $lastname, $email, $order_date, $delay='0')
+  function send($order_ref, $firstname, $lastname, $email, $order_date, $delay='0', $really_send=true)
   {
       if (empty(trim($order_ref)) || empty(trim($firstname)) || empty(trim($lastname)) || empty(trim($email)) || empty(trim($order_date))) {
           $this->last_debug="Some input missing (order_ref, firsname, lastname, email, order_date)";

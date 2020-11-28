@@ -20,7 +20,7 @@ class VerifiedReviewsService implements VerifiedReviewsServiceInterface
     $this->secret_key=$secret_key;
   }
 
-  function send($order_ref, $firstname, $lastname, $email, $order_date, $delay='0')
+  function send($order_ref, $firstname, $lastname, $email, $order_date, $delay='0', $really_send=true)
   {
 
     if (empty(trim($order_ref)) || empty(trim($firstname)) || empty(trim($lastname)) || empty(trim($email)) || empty(trim($order_date))) {
@@ -45,26 +45,35 @@ class VerifiedReviewsService implements VerifiedReviewsServiceInterface
 
     $this->last_record_sent=$record;
 
-    $encryptedNotification=http_build_query(
-      array(
-          'idWebsite' => $this->website_id,
-          'message' => json_encode($record)
-      )
-    );
-
-    $postNotification = array('http' =>
+    $resultArray=[];
+    if ($really_send)
+    {
+      $encryptedNotification=http_build_query(
         array(
-            'method'  => 'POST',
-            'header'  => 'Content-type: application/x-www-form-urlencoded',
-            'content' => $encryptedNotification
+            'idWebsite' => $this->website_id,
+            'message' => json_encode($record)
         )
-    );
-
-    $contextNotification = stream_context_create($postNotification);
-
-    $result = file_get_contents($this->url.'?action=act_api_notification_sha1&type=json2', false, $contextNotification);
-    
-    $resultArray = json_decode($result,true);
+      );
+  
+      $postNotification = array('http' =>
+          array(
+              'method'  => 'POST',
+              'header'  => 'Content-type: application/x-www-form-urlencoded',
+              'content' => $encryptedNotification
+          )
+      );
+  
+      $contextNotification = stream_context_create($postNotification);
+  
+      $result = file_get_contents($this->url.'?action=act_api_notification_sha1&type=json2', false, $contextNotification);
+      
+      $resultArray = json_decode($result,true);  
+    }
+    else
+    {// not sending the request
+      $resultArray['return']=1;
+      $resultArray['debug']='The record was not sent!';
+    }
 
     $status=$resultArray['return'];
     $this->last_status=$status;

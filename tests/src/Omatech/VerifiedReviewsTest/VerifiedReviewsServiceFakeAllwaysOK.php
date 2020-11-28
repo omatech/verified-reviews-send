@@ -1,6 +1,7 @@
 <?php
 
-namespace Omatech\VerifiedReviews;
+namespace Omatech\VerifiedReviewsTest;
+use Omatech\VerifiedReviews\VerifiedReviewsServiceInterface;
 
 class VerifiedReviewsServiceFakeAllwaysOK implements VerifiedReviewsServiceInterface
 {
@@ -20,7 +21,7 @@ class VerifiedReviewsServiceFakeAllwaysOK implements VerifiedReviewsServiceInter
     $this->secret_key=$secret_key;
   }
 
-  function send($order_ref, $firstname, $lastname, $email, $order_date, $delay='0')
+  function send($order_ref, $firstname, $lastname, $email, $order_date, $delay='0', $really_send=true)
   {
 
     $query='pushCommandeSHA1';
@@ -46,26 +47,19 @@ class VerifiedReviewsServiceFakeAllwaysOK implements VerifiedReviewsServiceInter
           'message' => json_encode($record)
       )
     );
-    /*
-    $postNotification = array('http' =>
-        array(
-            'method'  => 'POST',
-            'header'  => 'Content-type: application/x-www-form-urlencoded',
-            'content' => $encryptedNotification
-        )
-    );
 
-
-    $contextNotification = stream_context_create($postNotification);
-
-    $result = file_get_contents($this->url.'?action=act_api_notification_sha1&type=json2', false, $contextNotification);
-    
-    $resultArray = json_decode($result,true);
-    */
+    if ($really_send)
+    {
+      $debug='In theory we are sending the record, but this is a fake class';
+    }
+    else
+    {
+      $debug='We don\'t have to send the record, but this is a fake class';
+    }
 
     $status=1;
     $this->last_status=$status;
-    $this->last_debug="FAKE DEBUG\n";
+    $this->last_debug=$debug;
     if ($status==1)
     {
       return true;

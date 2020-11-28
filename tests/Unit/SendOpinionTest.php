@@ -3,8 +3,10 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Omatech\VerifiedReviews\VerifiedReviewsServiceFakeAllwaysOK;
-use Omatech\VerifiedReviews\VerifiedReviewsServiceFakeValidateInput;
+use Omatech\VerifiedReviewsTest\VerifiedReviewsServiceFakeAllwaysOK;
+use Omatech\VerifiedReviewsTest\VerifiedReviewsServiceFakeValidateInput;
+
+use function PHPUnit\Framework\assertEquals;
 
 class SendOpinionTest extends TestCase
 {
@@ -109,7 +111,39 @@ class SendOpinionTest extends TestCase
         "sign": "14a02c7832b85e368024a4beb43ec398595abd20"
     }');
     
-      var_dump($verifiedReviewService->last_debug);
+      assertEquals($verifiedReviewService->last_debug, 'In theory we are sending the record, but this is a fake class');
+    }
+
+
+    public function testSendVerifiedReviewOKWithoutSending()
+    {
+      $verifiedReviewService = new VerifiedReviewsServiceFakeAllwaysOK(
+        $_ENV['VERIFIED_REVIEWS_SERVICE_URL']
+        , $_ENV['VERIFIED_REVIEWS_WEBSITE_ID']
+        , $_ENV['VERIFIED_REVIEWS_SECRET_KEY']);
+
+      $ret=$verifiedReviewService->send(
+        $_ENV['VERIFIED_REVIEWS_TEST_ORDERREF']
+      , $_ENV['VERIFIED_REVIEWS_TEST_FIRSTNAME']
+      , $_ENV['VERIFIED_REVIEWS_TEST_LAST_NAME']
+      , $_ENV['VERIFIED_REVIEWS_TEST_EMAIL']
+      , $_ENV['VERIFIED_REVIEWS_TEST_ORDER_DATE']
+      , 1
+      , false
+      );
+      $this->assertNotFalse($ret);
+      $this->assertJson(json_encode($verifiedReviewService->last_record_sent), '{
+        "query": "pushCommandeSHA1",
+        "order_ref": "000001",
+        "firstname": "Agusti",
+        "lastname": "Pons Zapater",
+        "email": "apons@omatech.com",
+        "order_date": "2020-11-22 09:01:02",
+        "delay": "1",
+        "sign": "14a02c7832b85e368024a4beb43ec398595abd20"
+    }');
+    
+      assertEquals($verifiedReviewService->last_debug, 'We don\'t have to send the record, but this is a fake class');
     }
 
 }
